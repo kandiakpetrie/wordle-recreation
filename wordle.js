@@ -31,8 +31,8 @@ function initialize(){
         if("KeyA" <= e.code && e.code <= "KeyZ"){
             if(col < width){
                 let currTile = document.getElementById(row.toString() + "-" + col.toString());
-                if (currTile.innerTile == ""){
-                    currTile.innerTile = e.code[3];
+                if (currTile.innerText == ""){
+                    currTile.innerText = e.code[3];
                     col += 1;
                 }
             }
@@ -63,7 +63,7 @@ function initialize(){
 function update(){
     let correct = 0;
     for (let c = 0; c < width; c++){
-        let currTile = document.getElementById(row.toString() + "-" + col.toString());
+        let currTile = document.getElementById(row.toString() + "-" + c.toString());
         let letter = currTile.innerText;
         
         if(word[c] == letter){
