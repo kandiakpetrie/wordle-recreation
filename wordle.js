@@ -5,14 +5,59 @@ var width = 5;
 var row = 0;
 var col = 0;
 
+const WORDS = ["ABOUT","ABOVE","ACTOR","ADULT","ADIEU","AFTER","AGAIN","AGREE","ALARM","ALIVE","ALONE",
+  "ANGEL","ANGER","APPLE","ARISE","AUDIO","AWARD","BASIC","BEACH","BEGIN","BIRTH",
+  "BLACK","BLADE","BLAME","BLOOD","BOARD","BRAIN","BRAND","BREAD","BREAK","BRING",
+  "BROWN","BUILD","CANDY","CARRY","CAUSE","CHAIN","CHAIR","CHART","CHASE","CHEAP",
+  "CHECK","CHEST","CHILD","CLAIM","CLASS","CLEAN","CLEAR","CLIMB","CLOCK","CLOSE",
+  "CLOUD","COACH","COAST","COUNT","COURT","COVER","CRAFT","CRANE","CRASH","CREAM",
+  "CROWD","CROWN","DAILY","DANCE","DEATH","DOUBT","DRAFT","DRAMA","DREAM","DRESS",
+  "DRINK","DRIVE","EAGLE","EARLY","EARTH","EIGHT","ELECT","EMPTY","ENEMY","ENJOY",
+  "ENTER","ENTRY","EQUAL","ERROR","EVENT","EVERY","EXACT","EXIST","EXTRA","FAITH",
+  "FALSE","FAULT","FIELD","FIGHT","FINAL","FIRST","FLAME","FLASH","FLOOR","FOCUS",
+  "FORCE","FRAME","FRESH","FRONT","FRUIT","GIANT","GLASS","GLOBE","GRACE","GRADE",
+  "GRAND","GRAPE","GRASS","GREAT","GREEN","GROUP","GUARD","GUESS","GUEST","GUIDE",
+  "HAPPY","HEART","HEAVY","HORSE","HOTEL","HOUSE","HUMAN","IDEAL","IMAGE","INDEX",
+  "IVORY","JOINT","JOLLY","JUDGE","JUICE","KNIFE","KNOCK","LARGE","LASER","LATER",
+  "LAUGH","LAYER","LEARN","LEAST","LEAVE","LEGAL","LEMON","LEVEL","LIGHT","LIMIT",
+  "LOCAL","LOOSE","LOVED","LUCKY","LUNCH","MAGIC","MAJOR","MAPLE","MARCH","MATCH",
+  "MAYBE","MAYOR","MEDIA","METAL","MIGHT","MINOR","MODEL","MONEY","MONTH","MORAL",
+  "MOTOR","MOUNT","MOUSE","MOUTH","MOVIE","MUSIC","NERVE","NEVER","NIGHT","NOISE",
+  "NORTH","NOVEL","NURSE","OCEAN","OFFER","OFTEN","OLIVE","ORDER","OTHER","OUTER",
+  "PAINT","PANEL","PAPER","PARTY","PEACE","PHONE","PHOTO","PIANO","PILOT","PLACE",
+  "PLAIN","PLANE","PLANT","PLATE","POINT","POUND","POWER","PRESS","PRICE","PRIDE",
+  "PRIME","PRINT","PRIZE","PROOF","PROUD","QUEEN","QUICK","QUIET","QUITE","RADIO",
+  "RAISE","RANGE","RAPID","RATIO","REACH","READY","RIGHT","RIVER","ROUGH","ROUND",
+  "ROYAL","RURAL","SCALE","SCENE","SCORE","SENSE","SERVE","SEVEN","SHAPE","SHARE",
+  "SHARP","SHEET","SHELF","SHIFT","SHINE","SHIRT","SHOCK","SHORT","SIGHT","SKILL",
+  "SLEEP","SLIDE","SMALL","SMART","SMILE","SMOKE","SOLID","SOUND","SOUTH","SPACE",
+  "SPARE","SPEAK","SPEED","SPEND","SPORT","STAFF","STAGE","STAND","START","STATE",
+  "STEAM","STEEL","STICK","STILL","STONE","STORE","STORM","STORY","STRIP","STUDY",
+  "STUFF","STYLE","SUGAR","SUPER","SWEET","TABLE","TASTE","TEACH","THANK","THEME",
+  "THICK","THING","THINK","THREE","THROW","TIGER","TIGHT","TIRED","TITLE","TODAY",
+  "TOOTH","TOPIC","TOTAL","TOUCH","TOUGH","TOWER","TRACK","TRADE","TRAIN","TREAT",
+  "TREND","TRIAL","TRIBE","TRICK","TRUCK","TRULY","TRUST","TRUTH","UNCLE","UNDER",
+  "UNION","UNITY","UNTIL","UPPER","URBAN","USAGE","USUAL","VALID","VALUE","VIDEO",
+  "VISIT","VITAL","VOICE","WASTE","WATCH","WATER","WHEEL","WHERE","WHICH","WHILE",
+  "WHITE","WHOLE","WOMAN","WORLD","WORRY","WORTH","WOULD","WRITE","WRONG","YOUNG",
+  "YOUTH","ZEBRA"];
+
 var gameOver = false;
-var word = "LOVED";
+var word = "";
 
 window.onload = function(){
     initialize();
 }
 
+function pickRandomWord(){
+    let index = Math.floor(Math.random() * WORDS.length);
+    return WORDS[index];
+}
+
 function initialize(){
+    word = pickRandomWord();
+    console.log(word);
+
     for(let r = 0; r < height; r++){
         for (let c = 0; c < width; c++){
             // <span id="0-0" class=tile>P</span>
@@ -46,6 +91,7 @@ function initialize(){
         }
 
         else if(e.code == "Enter"){
+            if (col < width) return;
             update();
             row += 1;
             col = 0;
