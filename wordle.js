@@ -44,6 +44,8 @@ const WORDS = ["ABOUT","ABOVE","ACTOR","ADULT","ADIEU","AFTER","AGAIN","AGREE","
 
 var gameOver = false;
 var word = "";
+var stats = {wins: 0, losses: 0, streak: 0};
+var won = false;
 
 window.onload = function(){
     initialize();
@@ -54,7 +56,61 @@ function pickRandomWord(){
     return WORDS[index];
 }
 
+function loadStats(){
+    try {
+        let saved = localStorage.getItem("wordleStats");
+        if (saved) stats = JSON.parse(saved);
+    } catch (e){}
+    showStats();
+}
+
+function saveStats(){
+    try{
+        localStorage.setItem("wordleStats", JSON.stringify(stats));
+    } catch (e) {}
+}
+
+function showStats(){
+    document.getElementById("wins").innerText = stats.wins;
+    document.getElementById("losses").innerText = stats.losses;
+    document.getElementById("streak").innerText = stats.streak;
+}
+
+function recordResult(won){
+    if (won == true){
+        stats.wins += 1;
+        stats.streak += 1;
+    } else {
+        stats.losses += 1;
+        stats.streak = 0;
+        stats.wins = 0;
+    }
+    saveStats();
+    showStats();
+}
+
+function resetGame(){
+    for(let r = 0; r < height; r++){
+        for (let c = 0; c < width; c++){
+            let tile = document.getElementById(r.toString() + "-" + c.toString());
+            tile.innerText = "";
+            tile.classList.remove("correct", "present", "absent");
+        }
+    }
+
+    row = 0;
+    col = 0;
+    gameOver = false;
+    word = pickRandomWord();
+    console.log(word);
+
+    document.getElementById("answer").innerText = "";
+    document.getElementById("replay").blur();
+    document.getElementById("replay").style.display = "none";
+}
+
 function initialize(){
+    loadStats();
     word = pickRandomWord();
     console.log(word);
 
@@ -99,7 +155,9 @@ function initialize(){
 
         if (!gameOver && row == height){
             gameOver = true;
-            document.getElementById("answer").innerText = word; 
+            document.getElementById("answer").innerText = word;
+            recordResult(false);
+            document.getElementById("replay").style.display = "inline-block";
         }
         
         })
@@ -125,6 +183,8 @@ function update(){
 
         if (correct == width){
             gameOver = true;
+            recordResult(true);
+            document.getElementById("replay").style.display = "inline-block";
         }
     }
 }
