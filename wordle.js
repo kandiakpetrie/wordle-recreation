@@ -42,12 +42,26 @@ const WORDS = ["ABOUT","ABOVE","ACTOR","ADULT","ADIEU","AFTER","AGAIN","AGREE","
   "WHITE","WHOLE","WOMAN","WORLD","WORRY","WORTH","WOULD","WRITE","WRONG","YOUNG",
   "YOUTH","ZEBRA"];
 
+var VALID_GUESSES = new Set(WORDS);
+
+async function loadValidWords(){
+    try {
+        const res = await fetch("words.txt");
+        const text = await res.text();
+        text.split("\n").forEach(w => {
+            w = w.trim().toUpperCase();
+            if (w.length === 5) VALID_GUESSES.add(w);
+        });
+    } catch (e) {}
+}
+
 var gameOver = false;
 var word = "";
 var stats = {wins: 0, losses: 0, streak: 0};
 var won = false;
 
-window.onload = function(){
+window.onload = async function(){
+    await loadValidWords();
     initialize();
 }
 
@@ -97,6 +111,7 @@ function resetGame(){
             tile.classList.remove("correct", "present", "absent");
         }
     }
+    
 
     row = 0;
     col = 0;
@@ -105,8 +120,17 @@ function resetGame(){
     console.log(word);
 
     document.getElementById("answer").innerText = "";
+    document.getElementById("message").innerText = "";
     document.getElementById("replay").blur();
     document.getElementById("replay").style.display = "none";
+}
+
+function showMessage(text){
+    let msg = document.getElementById("message");
+    msg.innerText = text;
+    setTimeout(() => {
+        if (msg.innerText === text) msg.innerText = "";
+    }, 1500);
 }
 
 function initialize(){
@@ -147,7 +171,21 @@ function initialize(){
         }
 
         else if(e.code == "Enter"){
-            if (col < width) return;
+            if (col < width){
+                showMessage("Not enough letters");
+                return;
+            }
+
+            let guess = "";
+            for(let c = 0; c < width; c++){
+                guess += document.getElementById(row.toString() + "-" + c.toString()).innerText;
+            }
+
+            if (!VALID_GUESSES.has(guess)){
+                showMessage("Word doesn't exist");
+                return;
+            }
+
             update();
             row += 1;
             col = 0;

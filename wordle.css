@@ -1,5 +1,21 @@
+{
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: #121213;
+    color: #ffffff;
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+}
+
+#game {
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
     text-align: center;
 }
 
@@ -8,60 +24,121 @@ hr {
 }
 
 #title {
-    font-size: 36px;
+    margin: 10px 0 20px;
+    font-size: 2.2rem;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 0.3em;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #3a3a3c;
 }
 
 #board {
-    width: 350px;
-    height: 420px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    max-width: 330px;
     margin: 0 auto;
-    margin-top: 3 px;
-    display: flex;
-    flex-wrap: wrap;
 }
 
 .tile {
     /* Box */
-    border: 2px solid lightgray;
-    width: 60px;
-    height: 60px; 
-    margin: 2.5px;
-
-    /* Text */
-    color: black;
-    font-size: 36px;
-    font-weight: bold;
+    aspect-ratio: 1;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    border: 2px solid #3a3a3c;
+    border-radius: 4px;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-.correct {
+.tile.correct {
     background-color: #6AAA64;
-    color: white;
-    border-color: white;
+    border-color: #6AAA64;
 }
 
-.present {
+.tile.present {
     background-color: #C9B458;
-    color: white;
-    border-color: white;
+    border-color: #C9B458;
 }
 
-.absent {
+.tile.absent {
     background-color: #787C73;
-    color: white;
-    border-color: white;
+    border-color: #787C73;
+}
+
+.tile.filled {
+    border-color: #6b6b6e;
+    animation: pop 0.1s;
+}
+
+#answer {
+    margin: 20px 0 10px;
+    min-height: 1.5em;
+    letter-spacing: 0.2em;
+    color: #6AAA64;
+}
+
+#message {
+    height: 28px;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #f1f1f1;
 }
 
 #stats {
-    margin: 10px;
-    font-size: 18px;
-    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 24px;
 }
+
+.stat {
+    flex: 1;
+    max-width: 110px;
+    padding: 10px 0;
+    background: #1f1f21;
+    border-radius: 8px;
+    border-bottom: 1px solid #3a3a3c;
+}
+
+.stat span{
+    display: block;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.stat label{
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #8a8a8d;
+}
+
 
 #replay {
     display: none;
+    padding: 12px 28px;
+    border: 0;
+    border-radius: 8px;
+    background: #6AAA64;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+#replay:hover {
+    background: #6AAA64;
+}
+
+#replay:active {
+    transform: scale(0.97);
+}
+
+@keyframes pop {
+    50% {transform: scale(1.1);}
 }
